@@ -30,17 +30,27 @@ const userSchema = new Schema({
         minlength: 6,
         maxlength: 128 
     }, 
+
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     tokens: [
         {
             token: {
                 type: String
             }, 
-            createdAt: {
-                type: Date, 
-                default: Date.now
-            }
         }
-    ]
+    ],
+    role:{
+        type:[String],
+        default:[user]
+    },
+
+    review:{
+        type:Schema.Types.ObjectId,
+        ref:"Review"
+    }
 })
 
 

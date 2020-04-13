@@ -1,0 +1,11 @@
+const express=require("express")
+const router=express.Router()
+const { authenticateUser } = require('../app/middlewares/authentication')
+const { autherizationByUser}=require('../app/middlewares/autherization')
+const categoryController=require('../app/controllers/categoryController')
+
+router.get('/category', authenticateUser, autherizationByUser, categoryController.list)
+router.get('/category/:id', authenticateUser, autherizationByUser, categoryController.show)
+router.post('/category', authenticateUser, autherizationByUser, categoryController.create)
+router.put('/category/:id', authenticateUser, autherizationByUser, categoryController.update)
+router.delete('/category/:id', authenticateUser, autherizationByUser, categoryController.destroy)
