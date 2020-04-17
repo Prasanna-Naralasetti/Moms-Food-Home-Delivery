@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose
-  .connect("mongodb://localhost:27017/nov-momsfood-app", { useNewUrlParser: true })
+  .connect("mongodb+srv://prasanna_naralasetti:prassu@12345@cluster0-ou0we.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true })
   .then(function() {
     console.log("connected to db");
   })

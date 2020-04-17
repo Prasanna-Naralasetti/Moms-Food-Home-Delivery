@@ -39,7 +39,6 @@ module.exports.show = (req, res) => {
       res.json(err);
     });
 };
-
 module.exports.destroy = (req, res) => {
   const id = req.params.id;
   Category.findByIdAndDelete(id)
@@ -47,7 +46,7 @@ module.exports.destroy = (req, res) => {
       res.json(category);
     })
     .catch((err) => {
-      res.json(err);
+      res.json(err)
     })
 }
 
@@ -61,4 +60,4 @@ module.exports.update = (req, res) => {
     .catch((err) => {
       res.json(err);
     });
-};
+}

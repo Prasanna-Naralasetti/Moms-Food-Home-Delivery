@@ -1,16 +1,18 @@
-const express = require("express");
-const { mongoose } = require("./config/database");
+const express = require("express")
+const { mongoose } = require("./config/database")
 const cors = require('cors')
-const { usersRouter } = require("./app/controllers/UsersController");
+const { usersRouter } = require("./app/controllers/UsersController")
 
 
-const app = express();
-const port = 3033;
+const app = express()
+const port = 3033
 
 app.use(cors())
-app.use(express.json());
-app.use("/users", usersRouter);
+
+app.use(express.json())
+app.use("/public/uploads", express.static("public/uploads"))
+app.use("/users", usersRouter)
 
 app.listen(port, function() {
-  console.log("listening on port", port);
-});
+  console.log("listening on port", port)
+})
