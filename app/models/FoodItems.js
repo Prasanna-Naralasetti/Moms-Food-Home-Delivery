@@ -31,6 +31,11 @@ const fooditemSchema = new Schema({
         ref: "Category",
         required: true
     },
+    visaImage: [{
+        type: Object,
+        required: true
+    }],
+
     imageUrl: {
         type: String
     }

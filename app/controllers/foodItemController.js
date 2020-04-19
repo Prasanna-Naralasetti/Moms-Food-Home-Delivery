@@ -1,28 +1,5 @@
-const multer = require("multer");
-const multerS3 = require("multer-s3");
-const aws = require("aws-sdk");
-const { FoodItem } = require("../models/FoodItems");
-aws.config.update({
-  secretAccessKey: process.env.SECRETACCESS_KEY,
-  accessKeyId: process.env.ACCESS_KEYID,
-  region: "us-east-1"
-});
 
-const s3 = new aws.S3();
-
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: "food-delivery",
-    acl: "public-read",
-    metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
-    },
-    key: function (req, file, cb) {
-      cb(null, Date.now().toString() + file.originalname);
-    }
-  })
-});
+const FoodItem = require("../models/FoodItems");
 
 module.exports.list = (req, res) => {
   Product.find()
@@ -45,6 +22,7 @@ module.exports.show = (req, res) => {
 
 module.exports.post = (req, res) => {
   const user = req.user;
+  console.log("itemImage", req.files.itemImage)
   const fooditem = new FoodItem(
     {
       name: req.body.name,
@@ -53,7 +31,9 @@ module.exports.post = (req, res) => {
       available: req.body.available,
       isCod: req.body.isCod,
       category: req.body.category,
+     itemImage: req.files.itemImage[0].path,
       imageUrl: req.file.location
+
     },
     req.user._id
   );
@@ -69,24 +49,11 @@ module.exports.post = (req, res) => {
 }
 
 module.exports.update = (req, res) => {
-  const user = req.user._id;
-  Product.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      $set: {
-        name: req.body.name,
-        description: req.body.description,
-        price: req.body.price,
-        available: req.body.available,
-        isCod: req.body.isCod,
-        category: req.body.category,
-        imageUrl: req.file.location
-      }
-    },
-    {
-      new: true
-    }
-  )
+  const body = req.body;
+  const id = req.params.id;
+  FoodItem.findOneAndUpdate({ user: req.user._id, _id: id }, body,
+    { new: true, runValidators: true })
+
     .then(fooditem => {
       res.json(fooditem);
     })

@@ -8,6 +8,31 @@ const addressController = require('../app/controllers/addressController')
 const fooditemController = require('../app/controllers/foodItemController')
 const orderController = require('../app/controllers/orderController')
 
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads/')
+    },
+    filename: function (req, file, cb) {
+        // cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+        cb(null, Date.now() + file.originalname)
+    }
+})
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+}
+var upload = multer({
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 5 },
+    fileFilter: fileFilter
+})
+var uploadImg = upload.fields([
+    { name: 'itemImage' }
+])
 
 
 router.get('/category', authenticateUser, autherizationByUser, categoryController.list)
@@ -24,7 +49,7 @@ router.delete('/cart/:id', authenticateUser, cartController.destroy)
 
 router.get("/fooditem", authenticationByUser, autherizationByUser, fooditemController.list)
 router.get("/fooditem/:id", authenticationByUser, autherizationByUser, fooditemController.show)
-router.post("/fooditem", authenticationByUser, autherizationByUser, upload.single("imageUrl"), fooditemController.create)
+router.post("/fooditem", authenticationByUser, autherizationByUser,uploadImg, upload.single("imageUrl"), fooditemController.create)
 router.put("/fooditem/:id", authenticationByUser, autherizationByUser, upload.single("imageUrl"), fooditemController.update)
 router.delete("/fooditem/:id", authenticationByUser, autherizationByUser, fooditemController.destroy)
 
