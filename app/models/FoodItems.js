@@ -31,7 +31,7 @@ const fooditemSchema = new Schema({
         ref: "Category",
         required: true
     },
-    visaImage: [{
+    foodImage: [{
         type: Object,
         required: true
     }],
@@ -42,5 +42,5 @@ const fooditemSchema = new Schema({
 });
 const FoodItem = mongoose.model("FoodItem", fooditemSchema);
 module.exports = {
-    FoodItem
+	FoodItem
 };
