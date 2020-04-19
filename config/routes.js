@@ -9,6 +9,7 @@ const fooditemController = require('../app/controllers/foodItemController')
 const orderController = require('../app/controllers/orderController')
 
 const multer = require('multer')
+//creating multer functionality
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/')
